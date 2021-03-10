@@ -2,10 +2,10 @@ import Button from "../Button";
 
 interface IProps {
   Heading: string;
-  Image?: string;
+  Image?: string | null;
   Body: string;
-  ButtonPath?: string;
-  ButtonLabel?: string;
+  ButtonPath?: string | null;
+  ButtonLabel?: string | null;
 }
 
 const HomeSection: React.FC<IProps> = ({
@@ -16,13 +16,13 @@ const HomeSection: React.FC<IProps> = ({
   ButtonLabel,
 }) => {
   return (
-    <header>
+    <div className="h-screen bg-customBlack text-white">
       <h2>{Heading}</h2>
       <p>{Body}</p>
       {ButtonLabel && ButtonPath ? (
         <Button Label={ButtonLabel} Path={ButtonPath} isPrimary={true} />
       ) : null}
-    </header>
+    </div>
   );
 };
 

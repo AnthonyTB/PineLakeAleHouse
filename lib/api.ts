@@ -1,12 +1,18 @@
-import { IFetchParams } from "../interfaces";
+import {
+  IDrink,
+  IFetchParams,
+  IHomeSection,
+  IMenuSection,
+} from "../interfaces";
 
 const fetchApi = async (
+  endpoint: string | undefined,
   method: string,
   query: string,
   params: IFetchParams = {}
 ) => {
-  let url = `${process.env.CMS_ENDPOINT}${query}`;
-  if (params) {
+  let url = `${endpoint}${query}`;
+  if (Object.keys(params).length) {
     url = url.concat("?");
     for (const i in params) {
       // @ts-ignore
@@ -24,14 +30,34 @@ const fetchApi = async (
   }
 };
 
-export async function getHomeSections() {
-  const data = await fetchApi("GET", "contents");
+export async function getHomeSections(
+  endpoint: string | undefined
+): Promise<IHomeSection[]> {
+  const data = await fetchApi(endpoint, "GET", "contents");
+  return data;
 }
 
-export async function getDrinks() {
-  const data = await fetchApi("GET", "drinks");
+export async function getDrinks(
+  endpoint: string | undefined
+): Promise<string[]> {
+  const data = await fetchApi(endpoint, "GET", "drinks");
+  let listOfDrinks: string[] = [];
+  data.forEach((response: IDrink): void => {
+    listOfDrinks.push(response.Name);
+  });
+  return listOfDrinks;
 }
 
-export async function getFood() {
-  const data = await fetchApi("GET", "foods");
+export async function getFood(
+  endpoint: string | undefined
+): Promise<IMenuSection[]> {
+  const data = await fetchApi(endpoint, "GET", "foods");
+  return data;
+}
+
+export async function getHeroText(
+  endpoint: string | undefined
+): Promise<string> {
+  const data = await fetchApi(endpoint, "GET", "hero-heading");
+  return data.Text;
 }
